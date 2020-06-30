@@ -8,7 +8,7 @@ import com.unknown.bookadmin.model.request.UserModelRequest;
 
 public interface UserService {
 
-    List<User> loadUsers();
+    List<User> loadUsers(int page, int limit);
 
     User findByUsername(String username);
 

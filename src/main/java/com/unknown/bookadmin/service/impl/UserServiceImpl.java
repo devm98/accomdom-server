@@ -9,6 +9,9 @@ import com.unknown.bookadmin.repository.UserRoleRepository;
 import com.unknown.bookadmin.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,89 +19,92 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
-    private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
+	private final UserRepository userRepository;
+	private final UserRoleRepository userRoleRepository;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository) {
-        this.userRepository = userRepository;
-        this.userRoleRepository = userRoleRepository;
-    }
+	public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+		this.userRepository = userRepository;
+		this.userRoleRepository = userRoleRepository;
+	}
 
-    @Override
-    public List<User> loadUsers() {
-        return (List<User>) userRepository.findAll();
-    }
+	@Override
+	public List<User> loadUsers(int page, int limit) {
+		Pageable paging = PageRequest.of(page, limit);
 
+		Page<User> pagedResult = userRepository.findAll(paging);
 
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
+		return pagedResult.toList();
+	}
 
-    @Override
-    public List<User> findByUserRole(UserRole userRole, boolean status) {
-        return userRepository.findByUserRole(userRole, status);
-    }
+	@Override
+	public User findByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
 
-    @Override
-    public User createUser(UserModelRequest userModelRequest) {
-        User localUser = userRepository.findByUsername(userModelRequest.getUsername());
+	@Override
+	public List<User> findByUserRole(UserRole userRole, boolean status) {
+		return userRepository.findByUserRole(userRole, status);
+	}
 
-        if (localUser != null) {
-            LOG.info("User {} already exists. Nothing will be done.", localUser.getUsername());
-            throw new ServiceException("User already exists.");
-        } else {
-            User user = new User();
-            user.setUsername(userModelRequest.getUsername());
-            user.setPassword(new BCryptPasswordEncoder().encode(userModelRequest.getPassword()));
-            user.setEmail(userModelRequest.getEmail());
-            user.setFullName(userModelRequest.getFullName());
-            user.setBirthday(userModelRequest.getBirthday());
-            user.setGender(userModelRequest.getGender());
-            user.setPhone(userModelRequest.getPhone());
-            user.setAddress(userModelRequest.getAddress());
-            user.setStatus(userModelRequest.isStatus());
+	@Override
+	public User createUser(UserModelRequest userModelRequest) {
+		User localUser = userRepository.findByUsername(userModelRequest.getUsername());
 
-            UserRole role = userRoleRepository.findByRoleName(userModelRequest.getRoleName());
-            user.setUserRole(role);
+		if (localUser != null) {
+			LOG.info("User {} already exists. Nothing will be done.", localUser.getUsername());
+			throw new ServiceException("User already exists.");
+		} else {
+			User user = new User();
+			user.setUsername(userModelRequest.getUsername());
+			user.setPassword(new BCryptPasswordEncoder().encode(userModelRequest.getPassword()));
+			user.setEmail(userModelRequest.getEmail());
+			user.setFullName(userModelRequest.getFullName());
+			user.setBirthday(userModelRequest.getBirthday());
+			user.setGender(userModelRequest.getGender());
+			user.setPhone(userModelRequest.getPhone());
+			user.setAddress(userModelRequest.getAddress());
+			user.setStatus(userModelRequest.isStatus());
 
-            localUser = userRepository.save(user);
-        }
+			UserRole role = userRoleRepository.findByRoleName(userModelRequest.getRoleName());
+			user.setUserRole(role);
 
-        return localUser;
-    }
+			localUser = userRepository.save(user);
+		}
 
-    @Override
-    public User updateUser(long id, UserModelRequest userModelRequest) {
-        User userUpdated = new User();
-        userUpdated.setId(id);
-        userUpdated.setUsername(userModelRequest.getUsername());
-        userUpdated.setPassword(userModelRequest.getPassword());
-        userUpdated.setEmail(userModelRequest.getEmail());
-        userUpdated.setFullName(userModelRequest.getFullName());
-        userUpdated.setBirthday(userModelRequest.getBirthday());
-        userUpdated.setGender(userModelRequest.getGender());
-        userUpdated.setPhone(userModelRequest.getPhone());
-        userUpdated.setAddress(userModelRequest.getAddress());
-        userUpdated.setStatus(userModelRequest.isStatus());
+		return localUser;
+	}
 
-        UserRole role = userRoleRepository.findByRoleName(userModelRequest.getRoleName());
-        userUpdated.setUserRole(role);
+	@Override
+	public User updateUser(long id, UserModelRequest userModelRequest) {
+		User userUpdated = new User();
+		userUpdated.setId(id);
+		userUpdated.setUsername(userModelRequest.getUsername());
+		userUpdated.setPassword(userModelRequest.getPassword());
+		userUpdated.setEmail(userModelRequest.getEmail());
+		userUpdated.setFullName(userModelRequest.getFullName());
+		userUpdated.setBirthday(userModelRequest.getBirthday());
+		userUpdated.setGender(userModelRequest.getGender());
+		userUpdated.setPhone(userModelRequest.getPhone());
+		userUpdated.setAddress(userModelRequest.getAddress());
+		userUpdated.setStatus(userModelRequest.isStatus());
 
-        userUpdated = userRepository.save(userUpdated);
-        return userUpdated;
-    }
+		UserRole role = userRoleRepository.findByRoleName(userModelRequest.getRoleName());
+		userUpdated.setUserRole(role);
 
-    @Override
-    public User findOne(Long id) {
-        return userRepository.findById(id).get();
-    }
+		userUpdated = userRepository.save(userUpdated);
+		return userUpdated;
+	}
 
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
+	@Override
+	public User findOne(Long id) {
+		return userRepository.findById(id).get();
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id);
+	}
 
 }

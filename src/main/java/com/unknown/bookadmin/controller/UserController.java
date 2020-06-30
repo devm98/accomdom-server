@@ -15,42 +15,43 @@ import java.util.List;
 @RequestMapping(value = "users")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
-    private final UserService userService;
+	private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
-    @GetMapping()
-    public ResponseEntity<List<User>> loadUsers() {
-        List<User> users = userService.loadUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+	@GetMapping()
+	public ResponseEntity<List<User>> loadUsers(@RequestParam int page, @RequestParam int limit) {
+		List<User> users = userService.loadUsers(page, limit);
+		return new ResponseEntity<>(users ,HttpStatus.OK);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        User user = userService.findOne(id);
+	@GetMapping("/{id}")
+	public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+		User user = userService.findOne(id);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
 
-    @PostMapping()
-    public ResponseEntity<Void> createUser(@RequestBody UserModelRequest userModelRequest) {
-        User userCreated = userService.createUser(userModelRequest);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userCreated.getId())
-                .toUri();
-        return ResponseEntity.created(uri).build();
-    }
+	@PostMapping()
+	public ResponseEntity<Void> createUser(@RequestBody UserModelRequest userModelRequest) {
+		User userCreated = userService.createUser(userModelRequest);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userCreated.getId())
+				.toUri();
+		return ResponseEntity.created(uri).build();
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody UserModelRequest userModelRequest) {
-        User userUpdated = userService.updateUser(id, userModelRequest);
-        return new ResponseEntity<>(userUpdated, HttpStatus.OK);
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<User> updateUser(@PathVariable("id") long id,
+			@RequestBody UserModelRequest userModelRequest) {
+		User userUpdated = userService.updateUser(id, userModelRequest);
+		return new ResponseEntity<>(userUpdated, HttpStatus.OK);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
+		userService.deleteUser(id);
+		return ResponseEntity.noContent().build();
+	}
 }
