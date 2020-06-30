@@ -1,5 +1,4 @@
 # accomdom-server
-
 # Env
  - Database: postgresql(password/username: postgres)
  - Create database name: accomdoms
