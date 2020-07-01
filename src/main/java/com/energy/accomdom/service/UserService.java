@@ -9,6 +9,8 @@ import com.energy.accomdom.model.request.UserModelRequest;
 public interface UserService {
 
     List<User> loadUsers(int page, int limit);
+    
+    List<User> loadUsers();
 
     User findByUsername(String username);
 
