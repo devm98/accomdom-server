@@ -11,6 +11,9 @@ import com.energy.accomdom.entity.UserRole;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
+    
+    @Query(value = "select u from User u where u.username = ?1")
+    List<User> getAllUserBy(String username);
 
     @Query(value = "SELECT u FROM User u WHERE u.userRole = ?1 and u.status = ?2")
     List<User> findByUserRole(UserRole userRole, boolean status);

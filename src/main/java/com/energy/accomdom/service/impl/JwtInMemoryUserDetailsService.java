@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.energy.accomdom.entity.User;
 import com.energy.accomdom.entity.UserRole;
+import com.energy.accomdom.model.request.UserModelRequest;
 import com.energy.accomdom.service.JwtUserDetails;
 import com.energy.accomdom.service.UserRoleService;
 import com.energy.accomdom.service.UserService;
@@ -26,9 +27,8 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserRole role = userRoleService.findByRoleName("admin");
-		List<User> inMemoryUserList = userService.findByUserRole(role, true);
-
+		List<User> inMemoryUserList = userService.getAllUserBy(username);
+		
 		Optional<User> findFirst = inMemoryUserList.stream()
 				.filter(user -> user.getUsername().equals(username)).findFirst();
 

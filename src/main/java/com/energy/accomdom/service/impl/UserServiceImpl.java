@@ -115,6 +115,12 @@ public class UserServiceImpl implements UserService {
 		userRepository.deleteById(id);
 	}
 
+	@Override
+	public List<User> getAllUserBy(String username) {
+		List<User> users = userRepository.getAllUserBy(username);
+		return users;
+	}
+
 	
 
 }
