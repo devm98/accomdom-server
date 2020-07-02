@@ -32,14 +32,9 @@ public class UserController {
 	}
 
 	@GetMapping()
-	public ResponseEntity<List<User>> loadUsers(@RequestParam int page, @RequestParam int limit, @RequestParam int flag) {
-		if(flag == 1) {
+	public ResponseEntity<List<User>> loadUsers() {
 			List<User> userRoles = userService.loadUsers();
 	        return new ResponseEntity<>(userRoles, HttpStatus.OK);
-		} else {
-			List<User> users = userService.loadUsers(page, limit);
-			return new ResponseEntity<>(users ,HttpStatus.OK);
-		}
 	}
 
 	@GetMapping("/{id}")

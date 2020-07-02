@@ -6,9 +6,10 @@ import com.energy.accomdom.entity.Accomdom;
 import com.energy.accomdom.model.request.AccomdomModelRequest;
 
 public interface AccomdomService {
-	List<Accomdom> getAccomdoms(int page, int limit);
 	
 	List<Accomdom> getAccomdoms();
+	
+	List<Accomdom> getAccomdomsByUserId(Long id);
 
 	Accomdom createAccomdomPost(AccomdomModelRequest accomdomModelRequest);
 

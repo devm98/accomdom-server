@@ -31,15 +31,14 @@ public class AccomdomController {
 		this.accomdomService = accomdomService;
 	}
 
-	@GetMapping()
-	public ResponseEntity<List<Accomdom>> getAccomdoms(@RequestParam int page, @RequestParam int limit,
-			@RequestParam int flag) {
+	@GetMapping(params = {})
+	public ResponseEntity<List<Accomdom>> getAccomdoms(@RequestParam(required = false) Long id) {
 		List<Accomdom> accomdoms;
 
-		if (flag == 1) {
-			accomdoms = accomdomService.getAccomdoms();
+		if (id != null) {
+			accomdoms = accomdomService.getAccomdomsByUserId(id);
 		} else {
-			accomdoms = accomdomService.getAccomdoms(page, limit);
+			accomdoms = accomdomService.getAccomdoms();
 		}
 
 		return new ResponseEntity<>(accomdoms, HttpStatus.OK);

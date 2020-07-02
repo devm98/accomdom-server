@@ -33,15 +33,15 @@ public class AccomdomServiceImpl implements AccomdomService {
 
 	@Override
 	public List<Accomdom> getAccomdoms() {
-		List<Accomdom> users = accomdomRepository.findAll();
-		return users;
+		List<Accomdom> accomdoms = accomdomRepository.findAll();
+		return accomdoms;
 	}
-
+	
 	@Override
-	public List<Accomdom> getAccomdoms(int page, int limit) {
-		Pageable paging = PageRequest.of(page, limit);
-		Page<Accomdom> results = accomdomRepository.findAll(paging);
-		return results.toList();
+	public List<Accomdom> getAccomdomsByUserId(Long id) {
+		List<Accomdom> accomdoms =  accomdomRepository.getListByUserId(id);
+		
+		return accomdoms;
 	}
 
 	@Override
@@ -100,5 +100,8 @@ public class AccomdomServiceImpl implements AccomdomService {
 	public void deleteAccomdomPost(Long id) {
 		accomdomRepository.deleteById(id);
 	}
+
+
+	
 
 }
