@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.energy.accomdom.entity.Type;
 
 public interface TypeRepository extends JpaRepository<Type, Long>{
-
+	
+	 Type findByTypeName(String typeName);
 }

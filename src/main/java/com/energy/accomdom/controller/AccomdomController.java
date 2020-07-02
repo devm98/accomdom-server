@@ -30,14 +30,21 @@ public class AccomdomController {
 	public AccomdomController(AccomdomService accomdomService) {
 		this.accomdomService = accomdomService;
 	}
-	
+
 	@GetMapping()
-	public ResponseEntity<List<Accomdom>> getAccomdoms(@RequestParam int page, @RequestParam int limit) {
-		List<Accomdom> accomdoms = accomdomService.getAccomdoms(page, limit);
-		
-		return new ResponseEntity<>(accomdoms ,HttpStatus.OK);
+	public ResponseEntity<List<Accomdom>> getAccomdoms(@RequestParam int page, @RequestParam int limit,
+			@RequestParam int flag) {
+		List<Accomdom> accomdoms;
+
+		if (flag == 1) {
+			accomdoms = accomdomService.getAccomdoms();
+		} else {
+			accomdoms = accomdomService.getAccomdoms(page, limit);
+		}
+
+		return new ResponseEntity<>(accomdoms, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Accomdom> getAccomdomPostById(@PathVariable("id") long id) {
 		Accomdom accomdom = accomdomService.findOne(id);
@@ -48,14 +55,15 @@ public class AccomdomController {
 	@PostMapping()
 	public ResponseEntity<Void> createAccomdomPost(@RequestBody AccomdomModelRequest req) {
 		Accomdom results = accomdomService.createAccomdomPost(req);
-		
+
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(results.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Accomdom> updateAccomdomPost(@PathVariable("id") long id, @RequestBody AccomdomModelRequest req) {
+	public ResponseEntity<Accomdom> updateAccomdomPost(@PathVariable("id") long id,
+			@RequestBody AccomdomModelRequest req) {
 		Accomdom results = accomdomService.updateAccomdomPost(id, req);
 		return new ResponseEntity<>(results, HttpStatus.OK);
 	}

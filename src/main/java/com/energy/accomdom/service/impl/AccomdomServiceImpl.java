@@ -29,6 +29,13 @@ public class AccomdomServiceImpl implements AccomdomService {
 		this.typeRepository = typeRepository;
 		this.userRepository = userRepository;
 	}
+	
+
+	@Override
+	public List<Accomdom> getAccomdoms() {
+		List<Accomdom> users = accomdomRepository.findAll();
+		return users;
+	}
 
 	@Override
 	public List<Accomdom> getAccomdoms(int page, int limit) {
@@ -46,6 +53,8 @@ public class AccomdomServiceImpl implements AccomdomService {
 		a.setContent(req.getContent());
 		a.setAddress(req.getAddress());
 		a.setArea(req.getArea());
+		a.setRice(req.getRice());
+		a.setImage(req.getImage());
 
 		Optional<Type> type = typeRepository.findById(req.getType_id());
 		a.setType(type.get());
@@ -68,6 +77,8 @@ public class AccomdomServiceImpl implements AccomdomService {
 		a.setContent(req.getContent());
 		a.setAddress(req.getAddress());
 		a.setArea(req.getArea());
+		a.setRice(req.getRice());
+		a.setImage(req.getImage());
 
 		Optional<Type> type = typeRepository.findById(req.getType_id());
 		a.setType(type.get());

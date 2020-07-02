@@ -2,7 +2,6 @@ package com.energy.accomdom.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,9 +22,12 @@ public class Accomdom {
 	private String content;
 	private String address;
 	private int area;
+	private Long rice;
+	private String image;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne()
 	@JoinColumn(name = "type_id")
+//	@JsonIgnore()
 	private Type type;
 
 	@ManyToOne
@@ -86,6 +88,22 @@ public class Accomdom {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Long getRice() {
+		return rice;
+	}
+
+	public void setRice(Long rice) {
+		this.rice = rice;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }

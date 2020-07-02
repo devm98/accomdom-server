@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 			user.setGender(userModelRequest.getGender());
 			user.setPhone(userModelRequest.getPhone());
 			user.setAddress(userModelRequest.getAddress());
-			user.setStatus(userModelRequest.isStatus());
+			user.setStatus(true);
 
 			UserRole role = userRoleRepository.findByRoleName(userModelRequest.getRoleName());
 			user.setUserRole(role);
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 		userUpdated.setGender(userModelRequest.getGender());
 		userUpdated.setPhone(userModelRequest.getPhone());
 		userUpdated.setAddress(userModelRequest.getAddress());
-		userUpdated.setStatus(userModelRequest.isStatus());
+		userUpdated.setStatus(true);
 
 		UserRole role = userRoleRepository.findByRoleName(userModelRequest.getRoleName());
 		userUpdated.setUserRole(role);

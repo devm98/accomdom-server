@@ -15,10 +15,10 @@ public class AccomdomModelRequest {
 	private String address;
 
 	private int area;
-
 	private Long user_id;
-
 	private Long type_id;
+	private Long rice;
+	private String image;
 
 	public Long getId() {
 		return id;
@@ -74,6 +74,22 @@ public class AccomdomModelRequest {
 
 	public void setType_id(Long type_id) {
 		this.type_id = type_id;
+	}
+
+	public Long getRice() {
+		return rice;
+	}
+
+	public void setRice(Long rice) {
+		this.rice = rice;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }
